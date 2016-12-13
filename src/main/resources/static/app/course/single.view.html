@@ -1,0 +1,57 @@
+<div ng-class="{'panel-warning': vm.is_editing} " class="panel panel-default">
+    <div class="panel-heading">
+        <h5 class="pull-left"><b>Add course</b></h5>
+        <input class="btn btn-sm btn-success pull-right" type="button" ng-show="vm.is_editing"
+               ng-model="vm.entity.name" class="form-control" ng-click="vm.clear()" value="Clear Edit"/>
+        <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+        <form ng-submit="vm.save()">
+            <div class="form-group">
+                <label>Name</label>
+                <input ng-model="vm.entity.name" type="text" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label>Depends on</label>
+                <ui-select ng-model="vm.entity.dependsOn"
+                           title="Choose a course on which this will depend on">
+                    <ui-select-match
+                            placeholder="Select a course to depend on...">
+                        <span>{{$select.selected.name}}</span>
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="item in (vm.entities | filter:$select.search) | filter: (vm.entity.id) ? {id: '!' + vm.entity.id}  : ''"
+                            position="auto">
+                        {{item.name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" ng-model="vm.entity.name" class="form-control"/>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Depends on</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="e in vm.entities">
+        <td>{{e.id}}</td>
+        <td>{{e.name}}</td>
+        <td ng-if="e.dependsOn">{{e.dependsOn.name}}</td>
+        <td ng-if="!e.dependsOn">None</td>
+        <td>
+            <button class="btn btn-info" ng-click="vm.edit(e)">Edit</button>
+            <button class="btn btn-danger" ng-click="vm.remove(e)">Delete</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
