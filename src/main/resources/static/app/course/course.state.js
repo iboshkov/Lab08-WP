@@ -15,6 +15,12 @@
             controller: 'CourseController',
             controllerAs: 'vm'
         });
+        $stateProvider.state('single_course', {
+            url: '/courses/:id',
+            templateUrl: 'app/course/single.view.html',
+            controller: 'SingleCourseController',
+            controllerAs: 'vm'
+        });
     }
 
 })(angular);

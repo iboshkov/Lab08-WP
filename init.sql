@@ -32,6 +32,7 @@ CREATE TABLE StudentCourses (
 
 INSERT INTO Courses (`name`, depends_on)  VALUES ("Strukturno Programiranje", NULL);
 INSERT INTO Courses (`name`, depends_on)  VALUES ("Algoritmi i Podatocni Strukturi", 1);
+INSERT INTO Courses (`name`, depends_on)  VALUES ("Kompjuterski Mrezi", NULL);
 
 INSERT INTO Students (first_name, last_name, `index`)  VALUES ("Ilija", "Boshkov", 131223);
 INSERT INTO Students (first_name, last_name, `index`)  VALUES ("Lazar", "Nikolov", 131087);
@@ -40,5 +41,6 @@ INSERT INTO Students (first_name, last_name, `index`)  VALUES ("Tome", "Tomev", 
 INSERT INTO StudentCourses (student_id, course_id)  VALUES (1, 1);
 INSERT INTO StudentCourses (student_id, course_id)  VALUES (1, 2);
 INSERT INTO StudentCourses (student_id, course_id)  VALUES (2, 1);
+INSERT INTO StudentCourses (student_id, course_id)  VALUES (3, 3);
 SELECT student.* FROM StudentCourses as r INNER JOIN Students as student ON student.id = r.student_id WHERE r.course_id = 2 GROUP BY student.id;
 SELECT course.*, dependant.* FROM StudentCourses AS r INNER JOIN  Courses as course ON course.id = r.course_id LEFT JOIN Courses as dependant ON course.depends_on = dependant.id WHERE r.student_id = 1

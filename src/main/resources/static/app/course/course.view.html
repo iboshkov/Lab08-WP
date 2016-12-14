@@ -1,5 +1,6 @@
 <div ng-class="{'panel-warning': vm.is_editing} " class="panel panel-default">
     <div class="panel-heading">
+        Single
         <h5 class="pull-left"><b>Add course</b></h5>
         <input class="btn btn-sm btn-success pull-right" type="button" ng-show="vm.is_editing"
                ng-model="vm.entity.name" class="form-control" ng-click="vm.clear()" value="Clear Edit"/>
@@ -28,7 +29,7 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" ng-model="vm.entity.name" class="form-control"/>
+                <input type="submit" class="form-control"/>
             </div>
         </form>
     </div>

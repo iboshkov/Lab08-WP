@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class RESTController {
-        @Autowired
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @RequestMapping(method = RequestMethod.GET, value = "api/students/")
@@ -145,6 +145,19 @@ public class RESTController {
         return rows;
     }
 
+
+    @RequestMapping(method = RequestMethod.GET, value = "api/courses/{id}/qualified/")
+    public List<Student> getQualifiedStudents(@PathVariable(value="id") int id) {
+        String sql = "SELECT s.* FROM\n" +
+                "  Courses c INNER JOIN StudentCourses sc\n" +
+                "  ON c.depends_on is null or sc.course_id = c.depends_on\n" +
+                "  INNER JOIN Students s ON s.id = sc.student_id\n" +
+                "WHERE c.id = ?\n" +
+                "GROUP BY s.id\n";
+        List<Student> students = this.jdbcTemplate.query(sql, new Object[]{id}, new Student.StudentMapper());
+
+        return students;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "api/courses/{id}")
     public Course course(@PathVariable(value="id") int id) {

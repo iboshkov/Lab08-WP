@@ -16,6 +16,10 @@
             update: {
                 method: 'PUT'
             },
+            qualifiedStudents: {
+                method: 'GET',
+                url: API_URL + ":id/qualified/"
+            },
             remove: { method: 'DELETE' }
         });
 
@@ -23,6 +27,7 @@
         var service = {
             save: saveFn,
             update: updateFn,
+            getQualifiedStudents: qualifiedFn,
             getById: getByIdFn,
             getAll: getAllFn,
             remove: removeFn
@@ -47,7 +52,11 @@
         }
 
         function getByIdFn(courseId) {
-            return res.query({id: courseId}).$promise;
+            return res.get({id: courseId}).$promise;
+        }
+
+        function qualifiedFn(courseId) {
+            return res.qualifiedStudents({id: courseId}).$promise;
         }
 
         return service;

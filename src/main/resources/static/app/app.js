@@ -12,8 +12,6 @@ require("../bower_components/angular-resource/angular-resource.min");
 require("../bower_components/angular-bootstrap/ui-bootstrap-csp.css");
 require("../bower_components/angular-ui-router/release/angular-ui-router");
 
-function requireAll(r) { r.keys().forEach(r); }
-
 (function (angular) {
     'use strict';
 
