@@ -9,7 +9,7 @@
         <form ng-submit="vm.addCourse()">
             <div class="form-group">
                 <label>Course</label>
-                <ui-select ng-model="vm.student"
+                <ui-select ng-model="vm.course"
                            title="Choose a course to add to this student">
                     <ui-select-match
                             placeholder="Choose a course to add to this student...">
@@ -47,7 +47,7 @@
             <td>{{course.name}}</td>
             <td>
                 <a href="#!/courses/{{course.id}}"> <button class="btn btn-info">Manage</button></a>
-                <button ng-click="vm.removeStudent(student)" class="btn btn-danger">Remove</button>
+                <button ng-click="vm.removeCourse(course)" class="btn btn-danger">Remove</button>
             </td>
         </tr>
     </tbody>

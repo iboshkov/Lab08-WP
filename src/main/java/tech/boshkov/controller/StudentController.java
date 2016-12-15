@@ -60,8 +60,8 @@ public class StudentController {
         mStudentSvc.save(student);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "api/students/")
-    public void updateStudent(@RequestBody Student student) {
+    @RequestMapping(method = RequestMethod.PUT, value = "api/students/{id}")
+    public void updateStudent(@RequestBody Student student, @PathVariable(value = "id") long id) {
         mStudentSvc.update(student);
     }
 

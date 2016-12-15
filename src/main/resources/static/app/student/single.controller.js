@@ -16,7 +16,7 @@
         vm.saveErrMsg = null;
         vm.availableSizes = [20, 40];
         vm.qualifiedCourses = [];
-        vm.student = null;
+        vm.course = null;
 
         loadStudent();
 
@@ -42,17 +42,35 @@
         }
 
         vm.addCourse = function () {
-            vm.entity.students.push(vm.student);
-            CourseService.update(vm.entity);
+            console.log("Adding student to ", vm.course);
+            CourseService.getById(vm.course.id).then(function (data) {
+                var actualCourse = data;
+                console.log("Actual", actualCourse.students);
+                console.log("Actual", actualCourse);
+                actualCourse.students.push(vm.entity);
+
+                CourseService.update(actualCourse).then(function(data) {
+                    loadStudent();
+                });
+            }).catch(function(e) {
+                console.log("Error getting course data to add student.");
+            });
         };
 
         vm.removeCourse = function (course) {
-            console.log(vm.entity.courses);
-            var idx = vm.entity.courses.indexOf(course);
-            vm.entity.courses.splice(idx, 1);
-            console.log(vm.entity.courses);
+            console.log("Removing student from ", course);
+            CourseService.getById(course.id).then(function (data) {
+                var actualCourse = data;
+                var idx = actualCourse.students.indexOf(vm.entity);
+                actualCourse.students.splice(idx, 1);
 
-            StudentService.update(vm.entity);
+                CourseService.update(actualCourse).then(function(data) {
+                    loadStudent();
+                });
+            }).catch(function(e) {
+               console.log("Error getting course data to remove student.");
+            });
+
         };
 
     }
