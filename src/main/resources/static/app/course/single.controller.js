@@ -11,12 +11,7 @@
     function SingleCourseController($log, CourseService, StudentService, $stateParams) {
         var vm = this;
         vm.title = 'Single Course';
-        vm.save = save;
-        vm.clear = clear;
-        vm.edit = edit;
-        vm.remove = remove;
         vm.entity = {id: $stateParams.id};
-        vm.students = [];
         vm.saveOkMsg = null;
         vm.saveErrMsg = null;
         vm.availableSizes = [20, 40];
@@ -29,13 +24,13 @@
             CourseService.getQualifiedStudents(vm.entity.id).then(function(data) {
                 console.log("Got students");
                 vm.qualifiedStudents = data;
-            }).catch(function(e){
+                console.log(vm.qualifiedStudents);
 
+            }).catch(function(e){
                 console.log("Fail", e);
             });
 
             CourseService.getById(vm.entity.id).then(function (data) {
-                console.log("Wat");
                 vm.entity = data;
                 console.log("Course loaded");
                 console.log(vm.entity);
@@ -45,52 +40,20 @@
             });
         }
 
-        function save() {
-            console.log(vm.entity)
-            vm.saveOkMsg = null;
-            vm.saveErrMsg = null;
+        vm.addStudent = function () {
+            vm.entity.students.push(vm.student);
+            CourseService.update(vm.entity);
+        };
 
-            var promise;
+        vm.removeStudent = function (student) {
+            console.log(vm.entity.students);
+            var idx = vm.entity.students.indexOf(student);
+            vm.entity.students.splice(idx, 1);
+            console.log(vm.entity.students);
 
-            if (vm.is_editing) {
-                promise = CourseService.update(vm.entity);
-            }
-            else {
-                promise = CourseService.save(vm.entity);
-            }
+            CourseService.update(vm.entity);
+        };
 
-            vm.is_editing = false;
-            promise.then(successCallback, errorCallback);
-            function successCallback(data) {
-                loadCourse();
-                vm.saveOkMsg = "Course with id " + data.id + " is saved";
-                clear();
-            }
-
-            function errorCallback(data) {
-                vm.saveErrMsg = "Saving error occurred: " + data.message;
-            }
-        }
-
-        function clear() {
-            vm.entity = {};
-            vm.is_editing = false;
-        }
-
-        function edit(entity) {
-            console.log(entity);
-            vm.entity = {};
-            vm.is_editing = true;
-            angular.extend(vm.entity, entity);
-        }
-
-        function remove(entity) {
-            CourseService
-                .remove(entity)
-                .then(function () {
-                    loadCourse();
-                });
-        }
     }
 
 })(angular);

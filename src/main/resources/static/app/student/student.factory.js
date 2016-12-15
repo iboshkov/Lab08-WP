@@ -6,12 +6,10 @@
         .factory('StudentService', StudentServiceFn);
 
     StudentServiceFn.$inject = ['$log', '$timeout', '$q', "$resource"];
-    var API_URL = "http://localhost:8080/api/students/"
+    var API_URL = "/api/students/"
     /* @ngInject */
     function StudentServiceFn($log, $timeout, $q, $resource) {
         var res =  $resource(API_URL + ':id', { id: '@id' }, {
-            getAll: { method: 'GET' },
-            getById: { method: 'GET' },
             save: { method: 'POST' },
             update: {
                 method: 'PUT'
@@ -19,13 +17,16 @@
             remove: { method: 'DELETE' }
         });
 
+        var qualifiedResource =  $resource(API_URL + ':id/qualified/', { id: '@id' });
+
 
         var service = {
             save: saveFn,
             update: updateFn,
             getById: getByIdFn,
             getAll: getAllFn,
-            remove: removeFn
+            remove: removeFn,
+            getAvailableCourses: getAvailableFn
         };
 
         function getAllFn() {
@@ -47,7 +48,11 @@
         }
 
         function getByIdFn(studentId) {
-            return res.query({id: studentId}).$promise;
+            return res.get({id: studentId}).$promise;
+        }
+
+        function getAvailableFn(studentId) {
+            return qualifiedResource.query({id: studentId}).$promise;
         }
 
         return service;

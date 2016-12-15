@@ -12,27 +12,28 @@
         <h5><b>Add student to course</b></h5>
     </div>
     <div class="panel-body">
-        <form ng-submit="vm.addStudent($select.selected)">
+        <form ng-submit="vm.addStudent()">
             <div class="form-group">
                 <label>Student</label>
-                <ui-select ng-model="vm.qualifiedStudents"
+                <ui-select ng-model="vm.student"
                            title="Choose a student to add to this course">
                     <ui-select-match
                             placeholder="Choose a student to add to this course...">
-                        <span>{{$select.selected.index}}</span>
+                        <span>[{{$select.selected.personal_id}}] {{$select.selected.firstName}} {{$select.selected.lastName}}</span>
                     </ui-select-match>
                     <ui-select-choices
                             repeat="item in (vm.qualifiedStudents | filter:$select.search)"
                             position="auto">
-                        [{{item.index}}] {{item.firstName}} {{item.lastName}}
+                        [{{item.personal_id}}] {{item.firstName}} {{item.lastName}}
                     </ui-select-choices>
                 </ui-select>
             </div>
 
             <div class="form-group">
-                <input type="submit" class="form-control"/>
+                <input type="submit" class="form-control" />
             </div>
         </form>
+
     </div>
 </div>
 
@@ -47,11 +48,15 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="student in vm.entity.students">
+
+    <tr ng-repeat="student in vm.entity.students">
             <td>{{student.firstName}}</td>
             <td>{{student.lastName}}</td>
-            <td>{{student.index}}</td>
-            <td><button class="btn btn-danger">Remove</button></td>
+            <td>{{student.personal_id}}</td>
+            <td>
+                <a href="#!/students/{{student.id}}"> <button class="btn btn-info">Manage</button></a>
+                <button ng-click="vm.removeStudent(student)" class="btn btn-danger">Remove</button>
+            </td>
         </tr>
     </tbody>
 </table>

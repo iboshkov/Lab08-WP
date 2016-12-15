@@ -15,6 +15,13 @@
             controller: 'StudentController',
             controllerAs: 'vm'
         });
+
+        $stateProvider.state('single_student', {
+            url: '/students/:id',
+            templateUrl: 'app/student/single.view.html',
+            controller: 'SingleStudentController',
+            controllerAs: 'vm'
+        });
     }
 
 })(angular);

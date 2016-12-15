@@ -1,0 +1,54 @@
+
+<h2>{{ vm.entity.firstName }} {{ vm.entity.lastName }} <small>{{ vm.entity.personal_id }}</small></h2>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h5><b>Add student to course</b></h5>
+    </div>
+    <div class="panel-body">
+        <form ng-submit="vm.addCourse()">
+            <div class="form-group">
+                <label>Course</label>
+                <ui-select ng-model="vm.student"
+                           title="Choose a course to add to this student">
+                    <ui-select-match
+                            placeholder="Choose a course to add to this student...">
+                        <span>[{{$select.selected.id}}] {{$select.selected.name}} </span>
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="item in (vm.qualifiedCourses | filter:$select.search)"
+                            position="auto">
+                        [{{item.id}}] {{item.name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="form-control" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<h3>Courses</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    <tr ng-repeat="course in vm.entity.courses">
+            <td>{{course.id}}</td>
+            <td>{{course.name}}</td>
+            <td>
+                <a href="#!/courses/{{course.id}}"> <button class="btn btn-info">Manage</button></a>
+                <button ng-click="vm.removeStudent(student)" class="btn btn-danger">Remove</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

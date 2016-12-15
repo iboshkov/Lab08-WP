@@ -9,7 +9,7 @@
         <form ng-submit="vm.save()">
             <div class="form-group">
                 <label>Index</label>
-                <input ng-model="vm.entity.index" type="number" class="form-control"/>
+                <input ng-model="vm.entity.personal_id" type="number" class="form-control"/>
             </div>
             <div class="form-group">
                 <label>First Name</label>
@@ -32,20 +32,17 @@
         <th>Index</th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Courses</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="e in vm.entities">
         <td>{{e.id}}</td>
-        <td>{{e.index}}</td>
+        <td>{{e.personal_id}}</td>
         <td>{{e.firstName}}</td>
         <td>{{e.lastName}}</td>
         <td>
-            <button class="btn btn-info" ng-click="vm.edit(e)">Show Courses</button>
-        </td>
-        <td>
+            <a href="#!/students/{{e.id}}"> <button class="btn btn-info">Manage</button></a>
             <button class="btn btn-info" ng-click="vm.edit(e)">Edit</button>
             <button class="btn btn-danger" ng-click="vm.remove(e)">Delete</button>
         </td>

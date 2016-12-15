@@ -1,6 +1,5 @@
 <div ng-class="{'panel-warning': vm.is_editing} " class="panel panel-default">
     <div class="panel-heading">
-        Single
         <h5 class="pull-left"><b>Add course</b></h5>
         <input class="btn btn-sm btn-success pull-right" type="button" ng-show="vm.is_editing"
                ng-model="vm.entity.name" class="form-control" ng-click="vm.clear()" value="Clear Edit"/>
@@ -50,6 +49,7 @@
         <td ng-if="e.dependsOn">{{e.dependsOn.name}}</td>
         <td ng-if="!e.dependsOn">None</td>
         <td>
+            <a href="#!/courses/{{e.id}}"> <button class="btn btn-info">Manage</button></a>
             <button class="btn btn-info" ng-click="vm.edit(e)">Edit</button>
             <button class="btn btn-danger" ng-click="vm.remove(e)">Delete</button>
         </td>

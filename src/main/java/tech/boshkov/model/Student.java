@@ -1,53 +1,61 @@
 package tech.boshkov.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by user on 12/12/16.
  */
+@Entity
+@Table(name = "Students")
 public class Student {
-    private Integer id;
-    private Integer index;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    private Integer personal_id;
     private String first_name;
     private String last_name;
+
+    /*@ManyToMany(targetEntity = Course.class, mappedBy = "personal_id")
+    @JoinTable(name = "StudentCourses")
+    private List<CourseAssociation> courses;
+*/
+    @ManyToMany(mappedBy="students", fetch = FetchType.EAGER)
     private List<Course> courses;
 
-    public static class StudentMapper implements RowMapper<Student> {
-        @Autowired
-        private JdbcTemplate jdbcTemplate;
-
-
-        public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Student student = new Student();
-            student.setFirstName(rs.getString("first_name"));
-            student.setLastName(rs.getString("last_name"));
-            student.setIndex(rs.getInt("index"));
-            student.setId(rs.getInt("id"));
-
-            return student;
-        }
+    public Student() {
+        this.courses = new ArrayList<>();
     }
 
-    public Integer getId() {
+    public Student(String firstName, String lastName, int _index) {
+        first_name = firstName;
+        last_name = lastName;
+        personal_id = _index;
+        this.courses = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%d] %s %s", personal_id, first_name, last_name);
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getPersonal_id() {
+        return personal_id;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setPersonal_id(Integer personal_id) {
+        this.personal_id = personal_id;
     }
 
     public String getFirstName() {
@@ -70,8 +78,8 @@ public class Student {
     public List<Course> getCourses() {
         return courses;
     }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setCourses(List<Course> c) {
+        courses = c;
     }
+
 }

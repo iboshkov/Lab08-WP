@@ -6,23 +6,19 @@
         .factory('CourseService', CourseServiceFn);
 
     CourseServiceFn.$inject = ['$log', '$timeout', '$q', "$resource"];
-    var API_URL = "http://localhost:8080/api/courses/"
+    var API_URL = "/api/courses/";
     /* @ngInject */
     function CourseServiceFn($log, $timeout, $q, $resource) {
-        var res =  $resource(API_URL + ':id', { id: '@id' }, {
-            getAll: { method: 'GET' },
-            getById: { method: 'GET' },
+        var rootResource =  $resource(API_URL + ':id', { id: '@id' }, {
             save: { method: 'POST' },
             update: {
                 method: 'PUT'
             },
-            qualifiedStudents: {
-                method: 'GET',
-                url: API_URL + ":id/qualified/"
-            },
+
             remove: { method: 'DELETE' }
         });
 
+        var qualifiedResource =  $resource(API_URL + ':id/qualified/', { id: '@id' });
 
         var service = {
             save: saveFn,
@@ -34,29 +30,29 @@
         };
 
         function getAllFn() {
-            return res.query().$promise;
+            return rootResource.query().$promise;
         }
 
         function saveFn(course) {
             console.log(course);
-            return res.save(course).$promise;
+            return rootResource.save(course).$promise;
         }
 
         function removeFn(course) {
             console.log(course);
-            return res.remove(course).$promise;
+            return rootResource.remove(course).$promise;
         }
 
         function updateFn(course) {
-            return res.update(course).$promise;
+            return rootResource.update(course).$promise;
         }
 
         function getByIdFn(courseId) {
-            return res.get({id: courseId}).$promise;
+            return rootResource.get({id: courseId}).$promise;
         }
 
         function qualifiedFn(courseId) {
-            return res.qualifiedStudents({id: courseId}).$promise;
+            return qualifiedResource.query({id: courseId}).$promise;
         }
 
         return service;
